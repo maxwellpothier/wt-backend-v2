@@ -46,5 +46,14 @@ export const login = async (req, res) => {
 };
 
 export const getCurrentUserInfo = async (req, res) => {
-	res.send({data: req.user});
+	const currUser = await prisma.user.findUnique({
+		where: {
+			username: req.user.username,
+		},
+		include: {
+			posts: true,
+		},
+	});
+
+	res.send({data: currUser});
 };
