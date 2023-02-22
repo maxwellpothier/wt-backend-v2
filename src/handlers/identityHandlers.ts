@@ -13,7 +13,7 @@ export const createNewUser = async (req, res) => {
 		});
 
 		const accessToken = createJwt(newUser);
-		res.send({data: accessToken});
+		res.send({accessToken: accessToken});
 	} catch (err) {
 		res.status(400);
 		res.send({message: "Username has already been taken"});
@@ -42,7 +42,7 @@ export const login = async (req, res) => {
 	}
 
 	const accessToken = createJwt(user);
-	res.send({data: accessToken});
+	res.send({accessToken: accessToken});
 };
 
 export const getCurrentUserInfo = async (req, res) => {
