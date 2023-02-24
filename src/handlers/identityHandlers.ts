@@ -51,7 +51,11 @@ export const getCurrentUserInfo = async (req, res) => {
 			username: req.user.username,
 		},
 		include: {
-			posts: true,
+			posts: {
+				include: {
+					album: true,
+				}
+			},
 		},
 	});
 
