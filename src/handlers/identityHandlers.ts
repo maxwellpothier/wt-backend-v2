@@ -54,6 +54,9 @@ export const getCurrentUserInfo = async (req, res) => {
 			posts: {
 				include: {
 					album: true,
+				},
+				orderBy: {
+					createdAt: "desc",
 				}
 			},
 		},
