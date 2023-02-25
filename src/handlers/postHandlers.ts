@@ -30,3 +30,24 @@ export const createPost = async (req, res) => {
 		res.send({message: "Could not create post"});
 	}
 };
+
+export const getPost = async (req, res) => {
+	try {
+		const post = await prisma.post.findUnique({
+			where: {
+				id: req.params.postId,
+			},
+		});
+
+		if (!post) {
+			res.status(401);
+			res.json({message: "Could not find post"})
+			return;
+		}
+
+		res.send({post: post});
+	} catch (err) {
+		res.status(400);
+		res.send({message: "Could not get post"});
+	}
+};
