@@ -37,6 +37,9 @@ export const getPost = async (req, res) => {
 			where: {
 				id: req.params.postId,
 			},
+			include: {
+				album: true,
+			}
 		});
 
 		if (!post) {
