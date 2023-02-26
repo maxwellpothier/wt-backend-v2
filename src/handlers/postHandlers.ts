@@ -39,6 +39,7 @@ export const getPost = async (req, res) => {
 			},
 			include: {
 				album: true,
+				belongsTo: true,
 			}
 		});
 
