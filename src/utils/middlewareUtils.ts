@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 
 export const appendUserToRequest = (req, res, next) => {
 	const bearer = req.headers.authorization;
@@ -38,4 +39,15 @@ export const onlyAdmin = (req, res, next) => {
 	}
 
 	next();
+};
+
+export const handleInputErrors = (req, res, next) => {
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		res.status(400);
+		res.json({errors: errors.array()});
+	} else {
+		next();
+	}
 };
