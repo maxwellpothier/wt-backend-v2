@@ -13,3 +13,9 @@ export const createUserValidators = [
 	body("lastName").trim().not().isEmpty().withMessage("Last name cannot be empty"),
 	handleInputErrors,
 ];
+
+export const loginValidators = [
+	body("username").trim().not().isEmpty().withMessage("Username cannot be empty"),
+	body("password").trim().not().isEmpty().withMessage("Password cannot be empty"),
+	handleInputErrors,
+];
