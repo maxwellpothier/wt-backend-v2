@@ -8,6 +8,8 @@ export const createUserValidators = [
 		if (value !== req.body.password) {
 			throw new Error("Passwords do not match");
 		}
+		
+		return true;
 	}),
 	body("firstName").trim().not().isEmpty().withMessage("First name cannot be empty"),
 	body("lastName").trim().not().isEmpty().withMessage("Last name cannot be empty"),
