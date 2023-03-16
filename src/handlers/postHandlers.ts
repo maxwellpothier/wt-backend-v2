@@ -1,6 +1,18 @@
 import prisma from "../db";
 
 export const createPost = async (req, res) => {
+	const albumExists = await prisma.album.findUnique({
+		where: {
+			id: req.body.albumId,
+		},
+	});
+
+	if (!albumExists) {
+		res.status(401);
+		res.json({message: "Album specified not found"});
+		return;
+	}
+
 	const postFound = await prisma.post.findFirst({
 		where: {
 			belongsToId: req.user.id,
