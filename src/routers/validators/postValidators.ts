@@ -3,7 +3,7 @@ import { handleInputErrors } from "../../utils/middlewareUtils";
 
 export const createPostValidators = [
 	body("albumId").trim().not().isEmpty().withMessage("Unable to find album"),
-	body("rating").trim().not().isEmpty().withMessage("Must provide rating to post").custom(value => {
+	body("rating").trim().custom(value => {
 		if (value === "10") return true;
 		if (value === "0") return true;
 
