@@ -50,7 +50,7 @@ export const getCurrentUserInfo = async (req, res) => {
 		where: {
 			username: req.user.username,
 		},
-		include: {
+		select: {
 			posts: {
 				include: {
 					album: true,
@@ -59,6 +59,11 @@ export const getCurrentUserInfo = async (req, res) => {
 					createdAt: "desc",
 				}
 			},
+			createdAt: true,
+			firstName: true,
+			id: true,
+			lastName: true,
+			username: true,
 		},
 	});
 
