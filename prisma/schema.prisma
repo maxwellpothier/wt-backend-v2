@@ -14,10 +14,11 @@ model User {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now())
 
-    username  String @unique
+    username  String  @unique
+    email     String? @unique
     password  String
-    firstName String
-    lastName  String
+    firstName String?
+    lastName  String?
     posts     Post[]
 }
 
