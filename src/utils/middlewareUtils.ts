@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
+import config from "../config";
 
 export const appendUserToRequest = (req, res, next) => {
 	const bearer = req.headers.authorization;
@@ -32,7 +33,7 @@ export const appendUserToRequest = (req, res, next) => {
 };
 
 export const onlyAdmin = (req, res, next) => {
-	if (req.user.id !== process.env.ADMIN_USER_ID) {
+	if (req.user.id !== config.adminId) {
 		res.status(401);
 		res.json({message: "Admin user only"})
 		return;
