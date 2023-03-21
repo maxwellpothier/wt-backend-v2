@@ -3,6 +3,7 @@ import { handleInputErrors } from "../../utils/middlewareUtils";
 
 export const createUserValidators = [
 	body("username").trim().not().isEmpty().withMessage("Username cannot be empty"),
+	body("email").trim().isEmail().withMessage("Email must be a valid email address"),
 	body("password").trim().isLength({min: 8}).withMessage("Password must be 8 characters long"),
 	body("confirmPassword").trim().custom((value, {req}) => {
 		if (value !== req.body.password) {

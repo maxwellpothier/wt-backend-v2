@@ -3,9 +3,20 @@ import { hashPassword, comparePasswords, createJwt } from "../utils/authUtils";
 
 export const createNewUser = async (req, res) => {
 	try {
+		const findUser = await prisma.user.findUnique({
+			where: { email: req.body.email }
+		});
+
+		if (findUser) {
+			res.status(401);
+			res.json({message: "Email must be unique"});
+			return;
+        }
+		
 		const newUser = await prisma.user.create({
 			data: {
 				username: req.body.username,
+				email: req.body.email,
 				password: await hashPassword(req.body.password),
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
@@ -62,6 +73,7 @@ export const getCurrentUserInfo = async (req, res) => {
 			createdAt: true,
 			firstName: true,
 			id: true,
+			email: true,
 			lastName: true,
 			username: true,
 		},
