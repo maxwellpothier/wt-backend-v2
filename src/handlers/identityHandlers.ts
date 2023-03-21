@@ -63,6 +63,7 @@ export const getCurrentUserInfo = async (req, res) => {
 			createdAt: true,
 			firstName: true,
 			id: true,
+			email: true,
 			lastName: true,
 			username: true,
 		},
