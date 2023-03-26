@@ -8,6 +8,6 @@ const identityRouter = Router();
 identityRouter.post("/create", createUserValidators, createNewUser);
 identityRouter.post("/login", loginValidators, login);
 identityRouter.get("/", appendUserToRequest, getCurrentUserInfo);
-identityRouter.get("/forgot-password", sendForgotPasswordEmail);
+identityRouter.post("/forgot-password", sendForgotPasswordEmail);
 
 export default identityRouter;
