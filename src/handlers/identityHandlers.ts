@@ -83,7 +83,17 @@ export const getCurrentUserInfo = async (req, res) => {
 };
 
 export const sendForgotPasswordEmail = async (req, res) => {
-	res.status(401);
-	res.json({message: `Could not email ${req.body.email}`});
-	return;
+	const currentUser = await prisma.user.findUnique({
+		where: {
+            email: req.body.email,
+        },
+	});
+
+	if (!currentUser) {
+		res.status(401);
+		res.json({message: `Could not email ${req.body.email}`});
+		return;
+    }
+
+	res.send({data: currentUser});
 };
