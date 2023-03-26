@@ -91,9 +91,14 @@ export const sendForgotPasswordEmail = async (req, res) => {
 
 	if (!currentUser) {
 		res.status(401);
-		res.json({message: `Could not email ${req.body.email}`});
+		res.json({message: `Could not find user associated with ${req.body.email}`});
 		return;
     }
 
-	res.send({data: currentUser});
+	const resetToken = createJwt(currentUser);
+	const baseUrl = process.env.STAGE === "production" ? "https://www.whatsturning.com" : 
+	"http://localhost:3000";
+	const link = `${baseUrl}/reset-password?token=${resetToken}`;
+
+	res.send({data: link});
 };
