@@ -102,3 +102,16 @@ export const sendForgotPasswordEmail = async (req, res) => {
 
 	res.send({data: link});
 };
+
+export const changePassword = async (req, res) => {
+	const newUser = await prisma.user.update({
+		where: {
+			id: req.user.id,
+		},
+		data: {
+			password: await hashPassword(req.body.password),
+		}
+	});
+
+	res.send({data: newUser});
+};
