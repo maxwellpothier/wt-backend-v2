@@ -81,3 +81,9 @@ export const getCurrentUserInfo = async (req, res) => {
 
 	res.send({data: currUser});
 };
+
+export const sendForgotPasswordEmail = async (req, res) => {
+	res.status(401);
+	res.json({message: `Could not email ${req.body.email}`});
+	return;
+};
