@@ -22,3 +22,20 @@ export const loginValidators = [
 	body("password").trim().not().isEmpty().withMessage("Password cannot be empty"),
 	handleInputErrors,
 ];
+
+export const forgotPasswordValidators = [
+	body("email").trim().isEmail().withMessage("Email must be a valid email address"),
+    handleInputErrors,
+];
+
+export const resetPasswordValidators = [
+	body("password").trim().isLength({min: 8}).withMessage("Password must be 8 characters long"),
+	body("confirmPassword").trim().custom((value, {req}) => {
+		if (value !== req.body.password) {
+			throw new Error("Passwords do not match");
+		}
+		
+		return true;
+	}),
+	handleInputErrors,
+];
