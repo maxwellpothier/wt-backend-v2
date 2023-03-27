@@ -95,7 +95,7 @@ export const sendForgotPasswordEmail = async (req, res) => {
 		return;
     }
 
-	const resetToken = createJwt(currentUser);
+	const resetToken = createJwt(currentUser, "10m");
 	const baseUrl = process.env.STAGE === "production" ? "https://www.whatsturning.com" : 
 	"http://localhost:3000";
 	const link = `${baseUrl}/reset-password?token=${resetToken}`;

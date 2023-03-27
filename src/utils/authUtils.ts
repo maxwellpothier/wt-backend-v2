@@ -10,6 +10,6 @@ export const comparePasswords = (password, hash) => {
 	return bcrypt.compare(password, hash);
 };
 
-export const createJwt = (user) => {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "8h"});
+export const createJwt = (user, expiration = "8h") => {
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: expiration});
 };
