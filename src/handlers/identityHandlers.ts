@@ -113,5 +113,12 @@ export const changePassword = async (req, res) => {
 		}
 	});
 
-	res.send({data: newUser});
+	if (!newUser) {
+		res.status(401);
+		res.json({message: "Could not reset password"});
+		return;
+	}
+
+	const accessToken = createJwt(newUser);
+	res.send({accessToken: accessToken});
 };
