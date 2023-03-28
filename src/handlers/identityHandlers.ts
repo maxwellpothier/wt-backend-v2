@@ -107,7 +107,7 @@ export const sendForgotPasswordEmail = async (req, res) => {
 	const resetToken = createJwt(currentUser, "10m");
 	const baseUrl = process.env.STAGE === "production" ? "https://www.whatsturning.com" : 
 	"http://localhost:3000";
-	const link = `${baseUrl}/reset-password?token=${resetToken}`;
+	const link = `${baseUrl}/reset-password?token=${resetToken}&user=${currentUser.username}`;
 
 	const mailBody = {
 		from: process.env.MAIL_USER,
