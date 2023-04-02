@@ -1,4 +1,5 @@
 import prisma from "../db";
+import {OpenAIApi, Configuration} from "openai";
 
 export const addAlbum = async (req, res) => {
 	try {
@@ -40,5 +41,28 @@ export const getTodaysAlbum = async (req, res) => {
 	} catch (err) {
 		res.status(400);
 		res.send({message: "Error getting today's album"});
+	}
+};
+
+export const getAlbumDescription = async (req, res) => {
+	const albumName = req.body.albumName;
+	const config = new Configuration({
+		apiKey: process.env.OPENAI_API_KEY,
+	});
+
+	const openai = new OpenAIApi(config);
+
+	try {
+		const gptResponse = await openai.createCompletion({
+			model: "text-davinci-003",
+			prompt: `Tell me about the album ${albumName} like you want me to listen`,
+			temperature: 0.2,
+			max_tokens: 512,
+		});
+
+		res.send({gptResponse: gptResponse.data.choices[0].text});
+	} catch (err) {
+		res.status(400);
+		res.send({message: err});
 	}
 };
