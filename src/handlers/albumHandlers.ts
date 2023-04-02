@@ -46,6 +46,7 @@ export const getTodaysAlbum = async (req, res) => {
 
 export const getAlbumDescription = async (req, res) => {
 	const albumName = req.body.albumName;
+	const artistName = req.body.artistName;
 	const config = new Configuration({
 		apiKey: process.env.OPENAI_API_KEY,
 	});
@@ -55,10 +56,15 @@ export const getAlbumDescription = async (req, res) => {
 	try {
 		const gptResponse = await openai.createCompletion({
 			model: "text-davinci-003",
-			prompt: `Tell me about the album ${albumName} like you want me to listen`,
+			prompt: `Tell me about the album ${albumName} by ${artistName} like you want me to listen`,
 			temperature: 0.2,
 			max_tokens: 512,
 		});
+
+		if (gptResponse.data.choices[0].text.startsWith(" to it")) {
+			gptResponse.data.choices[0].text =
+				gptResponse.data.choices[0].text.slice(6);
+		}
 
 		res.send({gptResponse: gptResponse.data.choices[0].text});
 	} catch (err) {
