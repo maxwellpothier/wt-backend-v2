@@ -19,6 +19,6 @@ albumRouter.post(
 	addAlbum
 );
 albumRouter.get("/today", getTodaysAlbum);
-albumRouter.get("/description", getAlbumDescription);
+albumRouter.post("/description", getAlbumDescription);
 
 export default albumRouter;
