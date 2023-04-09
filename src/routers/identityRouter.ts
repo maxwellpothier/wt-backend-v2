@@ -13,6 +13,7 @@ import {
 	forgotPasswordValidators,
 	loginValidators,
 	resetPasswordValidators,
+	editUserValidators,
 } from "./validators/identityValidators";
 
 const identityRouter = Router();
@@ -31,6 +32,11 @@ identityRouter.post(
 	appendUserToRequest,
 	changePassword
 );
-identityRouter.post("/edit", appendUserToRequest, editCurrentUser);
+identityRouter.post(
+	"/edit",
+	appendUserToRequest,
+	editUserValidators,
+	editCurrentUser
+);
 
 export default identityRouter;
