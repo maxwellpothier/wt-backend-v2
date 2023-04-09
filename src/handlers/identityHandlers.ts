@@ -80,6 +80,8 @@ export const getCurrentUserInfo = async (req, res) => {
 			email: true,
 			lastName: true,
 			username: true,
+			bio: true,
+			musicProfileUrl: true,
 		},
 	});
 
@@ -159,23 +161,18 @@ export const changePassword = async (req, res) => {
 
 export const editCurrentUser = async (req, res) => {
 	console.log(req.body);
-	// const updatedUser = await prisma.user.update({
-	// 	where: {
-	// 		id: req.user.id,
-	// 	},
-	// 	data: {
-	// 		firstName: req.body.firstName,
-	// 		lastName: req.body.lastName,
-	// 		email: req.body.email,
-	// 	},
-	// });
+	const updatedUser = await prisma.user.update({
+		where: {
+			id: req.user.id,
+		},
+		data: {
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			email: req.body.email,
+			bio: req.body.bio,
+			musicProfileUrl: req.body.musicProfile,
+		},
+	});
 
-	// if (!updatedUser) {
-	// 	res.status(401);
-	// 	res.json({message: "Could not update user"});
-	// 	return;
-	// }
-
-	// const accessToken = createJwt(updatedUser);
-	res.send({body: req.body});
+	res.send({data: updatedUser});
 };

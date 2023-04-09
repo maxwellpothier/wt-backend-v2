@@ -104,18 +104,5 @@ export const editUserValidators = [
 			}
 			return true;
 		}),
-	body("password")
-		.trim()
-		.isLength({min: 8})
-		.withMessage("Password must be 8 characters long"),
-	body("confirmPassword")
-		.trim()
-		.custom((value, {req}) => {
-			if (value !== req.body.password) {
-				throw new Error("Passwords do not match");
-			}
-
-			return true;
-		}),
 	handleInputErrors,
 ];
