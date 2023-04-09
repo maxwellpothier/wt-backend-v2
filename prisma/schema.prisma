@@ -14,12 +14,14 @@ model User {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now())
 
-    username  String  @unique
-    email     String? @unique
-    password  String
-    firstName String?
-    lastName  String?
-    posts     Post[]
+    username        String  @unique
+    email           String? @unique
+    password        String
+    firstName       String?
+    lastName        String?
+    bio             String?
+    musicProfileUrl String?
+    posts           Post[]
 }
 
 model Album {
