@@ -1,19 +1,19 @@
 import prisma from "../db";
-import { hashPassword, comparePasswords, createJwt } from "../utils/authUtils";
+import {hashPassword, comparePasswords, createJwt} from "../utils/authUtils";
 import nodemailer from "nodemailer";
 
 export const createNewUser = async (req, res) => {
 	try {
 		const findUser = await prisma.user.findUnique({
-			where: { email: req.body.email }
+			where: {email: req.body.email},
 		});
 
 		if (findUser) {
 			res.status(401);
 			res.json({message: "Email must be unique"});
 			return;
-        }
-		
+		}
+
 		const newUser = await prisma.user.create({
 			data: {
 				username: req.body.username,
@@ -45,7 +45,10 @@ export const login = async (req, res) => {
 		return;
 	}
 
-	const isValidPassword = await comparePasswords(req.body.password, user.password);
+	const isValidPassword = await comparePasswords(
+		req.body.password,
+		user.password
+	);
 
 	if (!isValidPassword) {
 		res.status(401);
@@ -69,7 +72,7 @@ export const getCurrentUserInfo = async (req, res) => {
 				},
 				orderBy: {
 					createdAt: "desc",
-				}
+				},
 			},
 			createdAt: true,
 			firstName: true,
@@ -87,34 +90,40 @@ export const sendForgotPasswordEmail = async (req, res) => {
 	const transporter = nodemailer.createTransport({
 		service: "hotmail",
 		auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS,
-        },
+			user: process.env.MAIL_USER,
+			pass: process.env.MAIL_PASS,
+		},
 	});
 
 	const currentUser = await prisma.user.findUnique({
 		where: {
-            email: req.body.email,
-        },
+			email: req.body.email,
+		},
 	});
 
 	if (!currentUser) {
 		res.status(401);
-		res.json({message: `Could not find user associated with ${req.body.email}`});
+		res.json({
+			message: `Could not find user associated with ${req.body.email}`,
+		});
 		return;
-    }
+	}
 
 	const resetToken = createJwt(currentUser, "10m");
-	const baseUrl = process.env.STAGE === "production" ? "https://www.whatsturning.com" : 
-	"http://localhost:3000";
+	const baseUrl =
+		process.env.STAGE === "production"
+			? "https://www.whatsturning.com"
+			: "http://localhost:3000";
 	const link = `${baseUrl}/reset-password?token=${resetToken}&user=${currentUser.username}`;
 
 	const mailBody = {
 		from: process.env.MAIL_USER,
-        to: req.body.email,
-        subject: "What's Turning Password Reset",
-        text: "You are receiving this because you have requested the reset of the password for your account.\n\n" +
-            "Please click on the following link, or paste this into your browser to complete the process:\n\n" + link
+		to: req.body.email,
+		subject: "What's Turning Password Reset",
+		text:
+			"You are receiving this because you have requested the reset of the password for your account.\n\n" +
+			"Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+			link,
 	};
 
 	transporter.sendMail(mailBody, (err, info) => {
@@ -135,7 +144,7 @@ export const changePassword = async (req, res) => {
 		},
 		data: {
 			password: await hashPassword(req.body.password),
-		}
+		},
 	});
 
 	if (!newUser) {
@@ -146,4 +155,27 @@ export const changePassword = async (req, res) => {
 
 	const accessToken = createJwt(newUser);
 	res.send({accessToken: accessToken});
+};
+
+export const editCurrentUser = async (req, res) => {
+	console.log(req.body);
+	// const updatedUser = await prisma.user.update({
+	// 	where: {
+	// 		id: req.user.id,
+	// 	},
+	// 	data: {
+	// 		firstName: req.body.firstName,
+	// 		lastName: req.body.lastName,
+	// 		email: req.body.email,
+	// 	},
+	// });
+
+	// if (!updatedUser) {
+	// 	res.status(401);
+	// 	res.json({message: "Could not update user"});
+	// 	return;
+	// }
+
+	// const accessToken = createJwt(updatedUser);
+	res.send({body: req.body});
 };

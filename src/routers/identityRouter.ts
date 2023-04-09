@@ -4,14 +4,15 @@ import {
 	getCurrentUserInfo,
 	login,
 	sendForgotPasswordEmail,
-	changePassword
+	changePassword,
+	editCurrentUser,
 } from "../handlers/identityHandlers";
-import { appendUserToRequest } from "../utils/middlewareUtils";
+import {appendUserToRequest} from "../utils/middlewareUtils";
 import {
 	createUserValidators,
 	forgotPasswordValidators,
 	loginValidators,
-	resetPasswordValidators
+	resetPasswordValidators,
 } from "./validators/identityValidators";
 
 const identityRouter = Router();
@@ -19,7 +20,17 @@ const identityRouter = Router();
 identityRouter.post("/create", createUserValidators, createNewUser);
 identityRouter.post("/login", loginValidators, login);
 identityRouter.get("/", appendUserToRequest, getCurrentUserInfo);
-identityRouter.post("/forgot-password", forgotPasswordValidators, sendForgotPasswordEmail);
-identityRouter.post("/reset-password", resetPasswordValidators, appendUserToRequest, changePassword);
+identityRouter.post(
+	"/forgot-password",
+	forgotPasswordValidators,
+	sendForgotPasswordEmail
+);
+identityRouter.post(
+	"/reset-password",
+	resetPasswordValidators,
+	appendUserToRequest,
+	changePassword
+);
+identityRouter.post("/edit", appendUserToRequest, editCurrentUser);
 
 export default identityRouter;
