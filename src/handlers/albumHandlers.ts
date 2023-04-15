@@ -56,15 +56,10 @@ export const getAlbumDescription = async (req, res) => {
 	try {
 		const gptResponse = await openai.createCompletion({
 			model: "text-davinci-003",
-			prompt: `Tell me about the album ${albumName} by ${artistName} like you want me to listen`,
-			temperature: 0.2,
-			max_tokens: 512,
+			prompt: `Tell me about the album ${albumName} by ${artistName} like you want me to listen. The first paragraph should include information on the genre, the second paragraph should include information on the artist, and the third paragraph should include information on the album.`,
+			temperature: 0.9,
+			max_tokens: 1024,
 		});
-
-		if (gptResponse.data.choices[0].text.startsWith(" to it")) {
-			gptResponse.data.choices[0].text =
-				gptResponse.data.choices[0].text.slice(6);
-		}
 
 		res.send({gptResponse: gptResponse.data.choices[0].text});
 	} catch (err) {
