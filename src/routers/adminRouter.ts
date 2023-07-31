@@ -1,9 +1,9 @@
 import {Router} from "express";
 import {updateAotd} from "../handlers/adminHandlers";
-import {onlyAdmin} from "../utils/middlewareUtils";
+import {appendUserToRequest, onlyAdmin} from "../utils/middlewareUtils";
 
 const adminRouter = Router();
 
-adminRouter.post("/update-aotd", onlyAdmin, updateAotd);
+adminRouter.post("/update-aotd", appendUserToRequest, onlyAdmin, updateAotd);
 
 export default adminRouter;

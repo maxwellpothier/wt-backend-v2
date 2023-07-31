@@ -33,7 +33,6 @@ export const appendUserToRequest = (req, res, next) => {
 };
 
 export const onlyAdmin = (req, res, next) => {
-	console.log("User", req.user);
 	if (req.user.id !== config.adminId) {
 		res.status(401);
 		res.json({message: "Admin user only"});
