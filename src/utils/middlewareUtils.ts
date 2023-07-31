@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { validationResult } from "express-validator";
+import {validationResult} from "express-validator";
 import config from "../config";
 
 export const appendUserToRequest = (req, res, next) => {
@@ -15,7 +15,7 @@ export const appendUserToRequest = (req, res, next) => {
 
 	if (!token) {
 		res.status(401);
-		res.json({message: "Missing auth token"})
+		res.json({message: "Missing auth token"});
 		return;
 	}
 
@@ -27,7 +27,7 @@ export const appendUserToRequest = (req, res, next) => {
 		res.status(401);
 		res.json({
 			message: "Invalid auth token",
-			error: err
+			error: err,
 		});
 	}
 };
@@ -35,7 +35,7 @@ export const appendUserToRequest = (req, res, next) => {
 export const onlyAdmin = (req, res, next) => {
 	if (req.user.id !== config.adminId) {
 		res.status(401);
-		res.json({message: "Admin user only"})
+		res.json({message: "Admin user only"});
 		return;
 	}
 
